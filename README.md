@@ -34,31 +34,44 @@ To write and execute an Assembly language program to perform the factorial of a 
 ## PROGRAM
 ```asm
 ORG 0000H
-MOV DPTR,#4500H
-MOVX A,@DPTR
-MOV R0,A
-INC DPTR
-ACALL FACTORIAL
-MOVX @DPTR,A
-SJMP THIN
-FACTORIAL:DEC R0
-CJNE R0,#01H,PRODUCT
-SJMP THICK
-PRODUCT:MOV B,R0
-MUL AB
-ACALL FACTORIAL
-THICK: RET
-THIN:RET
+
+        MOV     DPTR, #4500H     ; Point DPTR to input address
+        MOVX    A, @DPTR        ; Read number from external memory
+        MOV     R0, A           ; Store number in R0
+
+        INC     DPTR            ; Point to output location
+        ACALL   FACTORIAL      ; Call factorial subroutine
+
+        MOVX    @DPTR, A        ; Store result in external memory
+
+THIN:   SJMP    THIN            ; Infinite loop
+FACTORIAL:
+        DEC     R0
+
+        CJNE    R0, #01H, PRODUCT
+        SJMP    THICK
+
+PRODUCT:
+        MOV     B, R0
+        MUL     AB              ; A = A × B
+        ACALL   FACTORIAL
+
+THICK:
+        RET
+
 END
 
 ```
 OUTPUT
 
-(Keil output screenshot can be inserted here)
+<img width="1919" height="1199" alt="Screenshot 2026-02-12 103901" src="https://github.com/user-attachments/assets/b2f59fc7-fffd-40bd-abc6-d754ffdbe4c0" />
 
 ---
 MANUAL CALCULATIONS
 
+<img width="839" height="1280" alt="image" src="https://github.com/user-attachments/assets/4ae93b73-655f-4007-a5c3-db6a6ea71b4e" />
+
+<img width="1280" height="1190" alt="image" src="https://github.com/user-attachments/assets/22112690-169b-406a-9862-6e8237d99853" />
 ---
 
 RESULT
